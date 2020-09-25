@@ -2,7 +2,7 @@
 
 This add-on is a library that lets you configure building bounds and their room bounds.
 
-It provides functions to :
+It provides functions to:
 
 - get the current building & room of any `Player` or `Entity`
 - check if a room has all of its doors closed
@@ -62,6 +62,8 @@ For every configured map, you need to make a Lua file in `lua/config/rooms_lib_m
     The value is identical on the server and the client, so it can be used for networking.
 - *:black_heart: SHARED:* `string` **`Building:getName`**`()`  
     Returns the name of the building
+- *:black_heart: SHARED:* `table` **`Building:getRooms`**`()`  
+    See `rooms_lib_mr.getRooms()`
 - *:black_heart: SHARED:* `no value` **`Building:setBuildingBounds`**`(Vector min, Vector max)`  
     Sets the bounding box of the building
 
@@ -124,6 +126,8 @@ Unlike the `MapCreationID`, the `hammerid` do not change when modifying a map.
     See `Room:getBuilding()`
 - *:black_heart: SHARED:* `string` **`rooms_lib_mr.getBuildingNameFromRoom`**`(Room room)`  
     See `Room:getBuildingName()`
+- *:black_heart: SHARED:* `table` **`rooms_lib_mr.getBuildings`**`()`  
+    Returns a copy of the list of buildings, with index used as table keys
 - *:black_heart: SHARED:* `int` **`rooms_lib_mr.getIdFromBuilding`**`()`  
     See `Building:getId()`
 - *:black_heart: SHARED:* `int` **`rooms_lib_mr.getIdFromRoom`**`(Room room)`  
@@ -149,6 +153,11 @@ Unlike the `MapCreationID`, the `hammerid` do not change when modifying a map.
 - *:black_heart: SHARED:* `Room` **`rooms_lib_mr.getRoomFromName`**`(string name, Building building)`  
     Retrieves a room by its name, only if it belongs to `building`  
     `building` is optional.
+- *:black_heart: SHARED:* `table` **`rooms_lib_mr.getRooms`**`(Building building)`  
+    Returns a new list of the rooms, ordered by index  
+    `building` is optional.
+    If `building` is specified, the returned table only contains its rooms.
+    If `building` is not specified, the keys in the returned table are the room indexes.
 - *:black_heart: SHARED:* `boolean` **`rooms_lib_mr.isInArea`**`(table area, any arg)`  
     Returns if `arg` is located within `area` bounds  
     `area` is a table with the keys `min` & `max` and with `Vector` values.  

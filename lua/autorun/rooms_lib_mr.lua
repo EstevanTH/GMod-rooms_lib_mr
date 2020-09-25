@@ -60,9 +60,16 @@ end
 
 local Room
 
--- function rooms_lib_mr.getBuildings()
-	-- return rooms_buildings_list
--- end
+function rooms_lib_mr.getBuildings()
+	-- Return a copy of id2building
+	-- You should cache the result if you often access the list.
+	
+	local id2building_ = {}
+	for id = 1, #id2building do
+		id2building_[id] = id2building[id]
+	end
+	return id2building_
+end
 
 function rooms_lib_mr.addBuilding(name)
 	local building = Building:new()
@@ -128,6 +135,27 @@ function rooms_lib_mr.getBuilding(arg)
 	return nil, nil
 end
 
+function Building:getRooms()
+	-- Return a new list of the rooms (of the specified building if specified), ordered by index
+	-- You should cache the result if you often access the list.
+	
+	local rooms = {}
+	if self then
+		for id = 1, #id2room do
+			local room = id2room[id]
+			if room2building[room] == self then
+				rooms[#rooms + 1] = id2room[id]
+			end
+		end
+	else
+		for id = 1, #id2room do
+			rooms[id] = id2room[id]
+		end
+	end
+	return rooms
+end
+rooms_lib_mr.getRooms = Building.getRooms
+
 function Building:addRoom(name, handleVoice, lights, lightArea)
 	-- The name is optional if a room is a building itself (the building should have no bounds then).
 	-- The room's lightArea activates its lights if the player is in any of the list.
@@ -168,12 +196,8 @@ Room.new = function(cls)
 	return setmetatable({}, cls)
 end
 
--- function rooms_lib_mr.getRooms(building)
-	-- return building
--- end
-
--- function rooms_lib_mr.getAreas(room)
-	-- return room.areas
+-- function Room:getAreas()
+	-- return self.areas
 -- end
 
 function Room:addArea(min, max)
